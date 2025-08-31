@@ -10,6 +10,9 @@ public class OpenAIConfig {
     @Bean
     public OpenAIClient openAIClient() {
         // 환경변수 OPENAI_API_KEY 를 자동으로 읽습니다.
+        String key = System.getenv("OPENAI_API_KEY");
+        System.out.println("OPENAI_API_KEY prefix = " + (key != null ? key.substring(0, 6) : "NOT SET"));
+
         return OpenAIOkHttpClient.fromEnv();
     }
 }

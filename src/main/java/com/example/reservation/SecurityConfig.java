@@ -1,6 +1,7 @@
 package com.example.reservation;
 
 
+import com.example.reservation.security.CustomOAuth2SuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,18 +19,23 @@ public class SecurityConfig {
 
 
     private final JwtFilter jwtFilter;
+    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
-    public SecurityConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(JwtFilter jwtFilter, CustomOAuth2SuccessHandler customOAuth2SuccessHandler) {
         this.jwtFilter = jwtFilter;
+        this.customOAuth2SuccessHandler = customOAuth2SuccessHandler; // ✅ 주입
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(crsf -> crsf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login","/api/register", "/api/reservations/**","/api/upload/analyze","/api/results").permitAll().anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login","/api/register", "/api/reservations/**","/api/upload/analyze","/api/results", "/api/gpt/**", "/login/**", "/oauth2/**").permitAll().anyRequest().authenticated())
+                .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
+                        .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
+                )
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }

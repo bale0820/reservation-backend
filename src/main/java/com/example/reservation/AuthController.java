@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 
 
 @RestController
@@ -38,11 +39,25 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody User loginUser) {
-        User user = userRepository.findByemail(loginUser.getEmail());
+//        Optional<User> user = userRepository.findByemail(loginUser.getEmail());
+//
+//        if(user ==null || !passwordEncoder.matches(loginUser.getPassword(),user.getPassword())) {
+//            return ResponseEntity.status(401).body(new ApiResponse<>(false, "이메일 또는 비밀번호가 틀렸습니다.", null));
+//        }
+//        String token = jwtUtil.generateToken(user.getEmail());
+//
+//        return ResponseEntity.ok(new ApiResponse<>(true, "로그인 성공", token));
+//    }
 
-        if(user ==null || !passwordEncoder.matches(loginUser.getPassword(),user.getPassword())) {
-            return ResponseEntity.status(401).body(new ApiResponse<>(false, "이메일 또는 비밀번호가 틀렸습니다.", null));
+        Optional<User> optionalUser = userRepository.findByemail(loginUser.getEmail());
+
+        if (optionalUser.isEmpty() ||
+                !passwordEncoder.matches(loginUser.getPassword(), optionalUser.get().getPassword())) {
+            return ResponseEntity.status(401)
+                    .body(new ApiResponse<>(false, "이메일 또는 비밀번호가 틀렸습니다.", null));
         }
+
+        User user = optionalUser.get();
         String token = jwtUtil.generateToken(user.getEmail());
 
         return ResponseEntity.ok(new ApiResponse<>(true, "로그인 성공", token));
