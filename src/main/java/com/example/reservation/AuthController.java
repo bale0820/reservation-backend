@@ -25,15 +25,38 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<Void>> register(@RequestBody User user) {
-
-        if (userRepository.findByemail(user.getEmail()) != null) {
-            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "이미 존재하는 이메일입니다.", null));
+        System.out.println("안녕하세요"+user.getUserId());
+        if (userRepository.findByemail(user.getEmail()).isPresent()) {
+            return ResponseEntity.ok(new ApiResponse<>(false, "이미 존재하는 이메일입니다.", null));
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         return ResponseEntity.ok(new ApiResponse<>(true, "회원가입 성공!", null));
+    }
+
+    @PostMapping("/registerNaver")
+    public ResponseEntity<ApiResponse<Void>> registerNaver(@RequestBody User user, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String userEmail = jwtUtil.extractEmail(token);
+        if (userRepository.findByemail(userEmail).isPresent()) {
+            userRepository.updatePhoneByEmail(userEmail, user.getPhone());
+            return ResponseEntity.ok(new ApiResponse<>(true, "회원가입 성공!", null));
+        }
+
+        return ResponseEntity.ok(new ApiResponse<>(false, "존재하는 이메일이 없습니다.", null));
+    }
+
+    @PostMapping("/register/checkUserId")
+    public ResponseEntity<ApiResponse<Void>> checkUserId(@RequestBody User user) {
+        System.out.println(userRepository.findByUserId(user.getUserId()));
+        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
+            return ResponseEntity.ok(new ApiResponse<>(false, null, null));
+        } else {
+            return ResponseEntity.ok(new ApiResponse<>(true, null, null));
+        }
+
     }
 
 

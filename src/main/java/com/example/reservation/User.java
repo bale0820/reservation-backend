@@ -11,16 +11,37 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    private String phone;
+
     @Column(unique = true)
     private String email;
 
-    private String password;
+    private String userId;
 
-    private String name;
+    private String password;
 
     private String profileImage;
 
     private String provider;
+
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getProfileImage() {
         return profileImage;
@@ -45,6 +66,7 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
 
     public User() {
     }

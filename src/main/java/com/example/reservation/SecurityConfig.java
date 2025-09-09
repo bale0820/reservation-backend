@@ -30,8 +30,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(crsf -> crsf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login","/api/register", "/api/reservations/**","/api/upload/analyze","/api/results", "/api/gpt/**", "/login/**", "/oauth2/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login", "/api/register/**", "/api/reservations/**", "/api/upload/analyze", "/api/results", "/api/gpt/**", "/login/**", "/oauth2/**").permitAll().anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
                         .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
                 )
@@ -40,11 +41,12 @@ public class SecurityConfig {
 
     }
 
+
     // ✅ CORS 허용 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
             CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // 프론트 도메인
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://127.0.0.1:3000")); // 프론트 도메인
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // 쿠키/헤더 인증 허용
