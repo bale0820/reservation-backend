@@ -82,7 +82,7 @@ public class AuthController {
 
         User user = optionalUser.get();
         String token = jwtUtil.generateToken(user.getEmail());
-
+        System.out.println(user.getEmail());
         return ResponseEntity.ok(new ApiResponse<>(true, "로그인 성공", token));
     }
 
