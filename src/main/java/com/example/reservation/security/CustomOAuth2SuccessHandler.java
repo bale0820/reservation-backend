@@ -54,6 +54,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         String token = jwtUtil.generateToken(user.getEmail());
 
         // 프론트엔드로 리다이렉트 + JWT 전달 (쿼리 파라미터)
-        response.sendRedirect("http://localhost:3000/oauth2/success?token=" + token + "&hasPhone=" + hasPhone);
+//        response.sendRedirect("http://localhost:3000/oauth2/success?token=" + token + "&hasPhone=" + hasPhone);
+        response.sendRedirect("http://127.0.0.1:3000/oauth2/success?token=" + token + "&hasPhone=" + hasPhone);
     }
 }

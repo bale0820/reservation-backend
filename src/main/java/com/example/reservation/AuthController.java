@@ -72,7 +72,7 @@ public class AuthController {
 //        return ResponseEntity.ok(new ApiResponse<>(true, "로그인 성공", token));
 //    }
 
-        Optional<User> optionalUser = userRepository.findByemail(loginUser.getEmail());
+        Optional<User> optionalUser = userRepository.findByUserId(loginUser.getUserId());
 
         if (optionalUser.isEmpty() ||
                 !passwordEncoder.matches(loginUser.getPassword(), optionalUser.get().getPassword())) {

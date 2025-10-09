@@ -34,11 +34,11 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())   // ✅ 기본 폼 로그인 끄기
                 .httpBasic(basic -> basic.disable())
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/login", "/api/register/**", "/api/reservations/**", "/api/upload/analyze", "/api/results", "/api/gpt/**", "/login/**", "/oauth2/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/**", "/api/register/**", "/api/reservations/**", "/api/upload/analyze", "/api/results", "/api/gpt/**", "/login/**", "/oauth2/**","/api/uploadImage", "/api/pay/**").permitAll().anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth     // ✅ OAuth2 로그인 활성화
                         .successHandler(customOAuth2SuccessHandler)// 로그인 성공 후 리다이렉트 URL
                 )
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }
