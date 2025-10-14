@@ -57,11 +57,11 @@ public class AnalysisResult {
         this.confidence = confidence;
     }
 
-    public LocalDateTime getCreatedaAt() {
+    public LocalDateTime getCreatedAt() {
         return createdaAt;
     }
 
-    public void setCreatedaAt(LocalDateTime createdaAt) {
+    public void setCreatedaAt(LocalDateTime createdAt) {
         this.createdaAt = createdaAt;
     }
 
