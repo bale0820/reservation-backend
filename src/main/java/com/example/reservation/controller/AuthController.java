@@ -1,11 +1,18 @@
-package com.example.reservation;
+package com.example.reservation.controller;
 
+import com.example.reservation.config.JwtUtil;
 import com.example.reservation.dto.ApiResponse;
+import com.example.reservation.dto.StaffDto;
+import com.example.reservation.dto.UserDto;
+import com.example.reservation.entity.User;
+import com.example.reservation.repository.UserRepository;
+import com.example.reservation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -19,6 +26,9 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserService userService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -62,16 +72,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody User loginUser) {
-//        Optional<User> user = userRepository.findByemail(loginUser.getEmail());
-//
-//        if(user ==null || !passwordEncoder.matches(loginUser.getPassword(),user.getPassword())) {
-//            return ResponseEntity.status(401).body(new ApiResponse<>(false, "이메일 또는 비밀번호가 틀렸습니다.", null));
-//        }
-//        String token = jwtUtil.generateToken(user.getEmail());
-//
-//        return ResponseEntity.ok(new ApiResponse<>(true, "로그인 성공", token));
-//    }
-
         Optional<User> optionalUser = userRepository.findByUserId(loginUser.getUserId());
 
         if (optionalUser.isEmpty() ||
@@ -84,6 +84,19 @@ public class AuthController {
         String token = jwtUtil.generateToken(user.getEmail());
         System.out.println(user.getEmail());
         return ResponseEntity.ok(new ApiResponse<>(true, "로그인 성공", token));
+    }
+
+
+    @GetMapping("/users")
+    public List<UserDto> findAllUsers() {
+
+        return userService.findAllUsers();
+    }
+
+    @GetMapping("/staffs")
+    public List<StaffDto> findAllStaffs() {
+
+        return userService.findAllStaff();
     }
 
 

@@ -1,32 +1,37 @@
-package com.example.reservation;
+package com.example.reservation.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "ai_question")
+@Table(name = "AI_QUESTION")
+@SequenceGenerator(
+        name = "ai_question_seq",
+        sequenceName = "AI_QUESTION_SEQ",
+        allocationSize = 1
+)
 public class AiQuestion {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ai_question_seq")
     private Long id;
 
+    @Column(nullable = false)
     private String userEmail;
 
-    @Column(columnDefinition="TEXT")
+    @Lob
+    @Column(nullable = false)
     private String question;
 
-    @Column(columnDefinition="LONGTEXT")
+    @Lob
+    @Column(nullable = false)
     private String answer;
 
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
-    // getters/setters
-
 
     public Long getId() {
         return id;
@@ -68,4 +73,3 @@ public class AiQuestion {
         this.createdAt = createdAt;
     }
 }
-

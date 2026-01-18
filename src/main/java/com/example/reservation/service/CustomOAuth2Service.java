@@ -1,7 +1,7 @@
 package com.example.reservation.service;
 
-import com.example.reservation.User;
-import com.example.reservation.UserRepository;
+import com.example.reservation.entity.User;
+import com.example.reservation.repository.UserRepository;
 
 import java.util.Map;
 

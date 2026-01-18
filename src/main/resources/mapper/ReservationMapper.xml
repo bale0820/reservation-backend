@@ -1,43 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.reservation.ReservationMapper">
-    <select id="getAll" resultType="com.example.reservation.Reservation">
-        SELECT*FROM reservation
-    </select>
-
-    <insert id="insert" parameterType="com.example.reservation.Reservation">
-        INSERT INTO reservation (id,name,date,time,user_email)
-        VALUES (#{id}, #{name}, #{date}, #{time}, #{userEmail})
-    </insert>
-
-    <select id="findByEmail" resultType="com.example.reservation.Reservation">
-        SELECT id, name, date, time, user_email FROM reservation WHERE user_email = #{userEmail}
-    </select>
-
-    <delete id="deleteByIdAndUserEmail">
-        DELETE FROM reservation
-        WHERE id = #{id} AND user_email = #{userEmail}
-    </delete>
-
-    <select id="findById" resultType="com.example.reservation.Reservation">
-        SELECT id, name, date, time, user_email AS userEmail FROM reservation WHERE id = #{id}
-    </select>
-
-
-    <update id="updateReservation" parameterType="com.example.reservation.Reservation">
-        UPDATE reservation
-        SET name = #{name},
-            date = #{date},
-            time = #{time},
-        WHERE id = #{id} AND user.email = #{userEmail}
-    </update>
-
-
-
-
 
 </mapper>
-

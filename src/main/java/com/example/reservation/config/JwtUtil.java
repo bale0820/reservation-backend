@@ -1,4 +1,4 @@
-package com.example.reservation;
+package com.example.reservation.config;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,9 @@
-package com.example.reservation;
+package com.example.reservation.controller;
 
 
+import com.example.reservation.repository.AnalysisResultRepository;
+import com.example.reservation.config.JwtUtil;
+import com.example.reservation.entity.AnalysisResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
